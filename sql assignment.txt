@@ -1,0 +1,132 @@
+SUBQURIES:
+===========
+
+ StuID | StuName | StuBranch | StuMarks | StuPlace |
++-------+---------+-----------+----------+----------+
+|     1 | Pallav  | ECE       |       95 | Kurnool  |
+|     2 | charan  | CSE       |       90 | Guntur   |
+|     3 | Arun    | EEE       |       88 | HYD      |
+|     4 | Sai     | ECE       |       95 | Bang     |
+|     5 | Mohan   | CSE       |       88 | chenn    |
++-------+---------+-----------+----------+----------+
+
+ 1)MySQL  localhost:3306 ssl  virtusa  SQL > select stuname from student
+                                        -> where stuid=any(select stuid from student where stumarks=95);
++---------+
+| stuname |
++---------+
+| Pallav  |
+| Sai     |
++---------+
+2) MySQL  localhost:3306 ssl  virtusa  SQL > select stuplace from student
+                                        -> where stuname=any(select stuname from student where stubranch='ece');
++----------+
+| stuplace |
++----------+
+| Kurnool  |
+| Bang     |
++----------+
+3) MySQL  localhost:3306 ssl  virtusa  SQL > select stubranch from student  where stuname=any(select stuname from student where stuid=2);
++-----------+
+| stubranch |
++-----------+
+| CSE       |
++-----------+
+
+4) MySQL  localhost:3306 ssl  virtusa  SQL > select stuname from student where stumarks=any(select max(stumarks) from student);
++---------+
+| stuname |
++---------+
+| Pallav  |
+| Sai     |
++---------+
+2 rows in set (0.0581 sec)
+5) MySQL  localhost:3306 ssl  virtusa  SQL > select stuname from student where stumarks=any(select min(stumarks) from student);
++---------+
+| stuname |
++---------+
+| Arun    |
+| Mohan   |
++---------+
+6) MySQL  localhost:3306 ssl  virtusa  SQL > select stuplace from student
+                                        -> where stumarks=any(select stumarks from student where stumarks=95);
++----------+
+| stuplace |
++----------+
+| Kurnool  |
+| Bang     |
++----------+
+7) MySQL  localhost:3306 ssl  virtusa  SQL > select stumarks from student
+                                        -> where stubranch=any(select stubranch from student where stubranch='cse');
++----------+
+| stumarks |
++----------+
+|       90 |
+|       88 |
++----------+
+8) MySQL  localhost:3306 ssl  virtusa  SQL > select stuname from student where stuname=any(select stuname from student where stuname like '%n');
++---------+
+| stuname |
++---------+
+| charan  |
+| Arun    |
+| Mohan   |
++---------+
+9) MySQL  localhost:3306 ssl  virtusa  SQL > select stubranch from student
+                                        -> where stuname=any(select stuname from student where stuname like '%n');
++-----------+
+| stubranch |
++-----------+
+| CSE       |
+| EEE       |
+| CSE       |
++-----------+
+10) MySQL  localhost:3306 ssl  virtusa  SQL > select * from student
+                                        -> where stuname=any(select stuname from student where stuname like '%n');
++-------+---------+-----------+----------+----------+
+| StuID | StuName | StuBranch | StuMarks | StuPlace |
++-------+---------+-----------+----------+----------+
+|     2 | charan  | CSE       |       90 | Guntur   |
+|     3 | Arun    | EEE       |       88 | HYD      |
+|     5 | Mohan   | CSE       |       88 | chenn    |
++-------+---------+-----------+----------+----------+
+
+
+JOINS:
+=======
+
+ MySQL  localhost:3306 ssl  virtusa  SQL > select orders.orderid,employee.empname from orders INNER JOIN employee ON orders.id=employee.empid;
++---------+---------+
+| orderid | empname |
++---------+---------+
+|     123 | pal     |
+|     456 | cha     |
+|     789 | har     |
+|     123 | aru     |
++---------+---------+
+4 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  virtusa  SQL > select orders.orderid,employee.empname from orders RIGHT JOIN employee ON orders.id=employee.empid;
++---------+---------+
+| orderid | empname |
++---------+---------+
+|     123 | pal     |
+|     456 | cha     |
+|     789 | har     |
+|     123 | aru     |
++---------+---------+
+4 rows in set (0.0639 sec)
+ MySQL  localhost:3306 ssl  virtusa  SQL > select orders.orderid,employee.empname from orders LEFT JOIN employee ON orders.id=employee.empid;
++---------+---------+
+| orderid | empname |
++---------+---------+
+|     123 | pal     |
+|     456 | cha     |
+|     789 | har     |
+|     123 | aru     |
+|      42 | NULL    |
+
+
+
+
+
+
